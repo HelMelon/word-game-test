@@ -46,5 +46,6 @@ input, button, textarea, select{
 
 body, html{
     height: 100%; 
-    scroll-behavior: smooth; 
+    scroll-behavior: smooth;
+    overscroll-behavior: contain;
 }
