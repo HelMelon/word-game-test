@@ -31,7 +31,7 @@
     }
 
     h2, p {
-        font-family: "VAG World", serif;
+        font-family: "VAG World", Arial, sans-serif;
         color: #fff;
     }
 

@@ -63,7 +63,7 @@
     }
 
     .cell p {
-        font-family: "VAG World", serif;
+        font-family: "VAG World", Arial, sans-serif;
         font-weight: 700;
         text-align: center;
         text-transform: uppercase;
