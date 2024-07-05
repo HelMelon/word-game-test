@@ -1,5 +1,5 @@
 <script>
-    import {onMount} from "svelte";
+    import {onMount, tick} from "svelte";
     import GamePage from "./GamePage.svelte";
     import WinPage from "./WinPage.svelte";
     import Popup from "../../lib/elements/Popup.svelte";
@@ -17,6 +17,8 @@
 
     let isWinStep = false;
 
+    let repaintGamePage = true;
+
     function handleGetLevel() {
         level = JSON.parse(localStorage.getItem('levelStg'));
         wordsList = JSON.parse(JSON.stringify(level));
@@ -31,10 +33,13 @@
         return false;
     }
 
-    function handleTabDuplicate() {
+    async function handleTabDuplicate() {
         localStorage.setItem('tabHash', tabHash);
         anotherTab = true;
+        repaintGamePage = false;
         level = JSON.parse(localStorage.getItem('levelStg'));
+        await tick();
+        repaintGamePage = true;
     }
 
     function handleActivity() {
@@ -51,7 +56,9 @@
 <svelte:window on:beforeunload|preventDefault={onUnloadHandler} on:focus|preventDefault={handleActivity} />
 
 {#if (!isWinStep) }
-    <GamePage {level} {wordsList} {levelCount} on:winStateChange={handleWinState}/>
+    {#if repaintGamePage}
+        <GamePage {level} {wordsList} {levelCount} on:winStateChange={handleWinState}/>
+    {/if}
 {:else}
     <WinPage bind:count={levelCount} on:getLevel={handleGetLevel} on:winStateChange={handleWinState}/>
 {/if}
