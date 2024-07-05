@@ -24,7 +24,6 @@
     }
 
     function onUnloadHandler () {
-        debugger;
         if (!anotherTab) {
             localStorage.removeItem('tabHash');
         }
@@ -48,14 +47,13 @@
 
 </script>
 
-<svelte:window on:unload={onUnloadHandler} on:click={handleActivity} />
-<div>
-    {#if (!isWinStep) }
-        <GamePage {level} {wordsList} {levelCount} on:winStateChange={handleWinState}/>
-    {:else}
-        <WinPage bind:count={levelCount} on:getLevel={handleGetLevel} on:winStateChange={handleWinState}/>
-    {/if}
-    {#if !anotherTab}
-        <Popup handleUpdate={handleTabDuplicate} />
-    {/if}
-</div>
+<svelte:window on:beforeunload={onUnloadHandler} on:click={handleActivity} />
+
+{#if (!isWinStep) }
+    <GamePage {level} {wordsList} {levelCount} on:winStateChange={handleWinState}/>
+{:else}
+    <WinPage bind:count={levelCount} on:getLevel={handleGetLevel} on:winStateChange={handleWinState}/>
+{/if}
+{#if !anotherTab}
+    <Popup handleUpdate={handleTabDuplicate} />
+{/if}

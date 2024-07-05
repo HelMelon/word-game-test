@@ -4,7 +4,6 @@
     import {collectLetters} from "../../utils/collectLetters.js";
 
     let buttons = [];
-    let device = '';
 
     export let connectedLetters = '';
     export let level;
@@ -13,15 +12,16 @@
     const dispatch = createEventDispatcher();
 
     function connectLetters(event) {
+        event.target.releasePointerCapture(event.pointerId);
         event.target.classList.add('focus');
 
         connectedLetters += event.target.innerHTML;
-        event.target.removeEventListener("mouseenter", connectLetters, {once: true});
+        event.target.removeEventListener("pointermove", connectLetters);
     }
 
 
-    function wordguesed(event) {
-        buttons.forEach(button => button.removeEventListener("mouseenter", connectLetters));
+    function wordguesed() {
+        buttons.forEach(button => button.removeEventListener("pointermove", connectLetters));
         setTimeout(() => {
             buttons.forEach(button => button.classList.remove('focus'))
         }, 1000)
@@ -49,19 +49,15 @@
     }
 
     function addingListeners(event) {
-        event.target.classList.add('focus');
-        connectedLetters = event.target.innerHTML;
-        buttons.forEach(elem => elem.addEventListener("mouseenter", connectLetters, {once: true}));
-        buttons.forEach(elem => elem.addEventListener('mouseup', wordguesed));
+            event.target.classList.add('focus');
+            buttons.forEach(elem => elem.addEventListener("pointermove", connectLetters));
+            buttons.forEach(elem => elem.addEventListener('pointerup', wordguesed));
     }
 
     onMount(async () => {
         const lettersList = collectLetters(wordsList);
         drawCircle(lettersList);
         buttons = [].slice.call(document.querySelectorAll('#letter'));
-        // device = (/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i
-        //         .test(navigator.userAgent))
-        //         ? 'mobile' : 'desktop';
         await tick();
         level.forEach((word, index) => {
             if(!word) {
@@ -74,7 +70,7 @@
 <div class="letters-circle">
     <ul>
         {#each collectLetters(wordsList) as letter}
-            <li on:mousedown={addingListeners}
+            <li on:pointerdown={addingListeners}
                 class="letter">
                 <p id="letter">{letter}</p>
             </li>
@@ -86,6 +82,8 @@
     ul {
         position: relative;
         margin: 0 auto;
+        touch-action: none;
+        pointer-events: auto;
     }
 
     .letter {
@@ -99,6 +97,8 @@
         -moz-user-select: none;
         -ms-user-select: none;
         user-select: none;
+        touch-action: none;
+        pointer-events: auto;
     }
 
     .letter p {
@@ -106,7 +106,7 @@
         border-radius: 50%;
         text-align: center;
         line-height: 3rem;
-        font-family: "VAG World", serif;
+        font-family: "VAG World", Arial, sans-serif;
         text-transform: uppercase;
         width: 3rem;
         height: 3rem;
@@ -116,6 +116,7 @@
         display: flex;
         position: relative;
         height: 160px;
+        touch-action: none;
     }
 
     :global(.focus) {
