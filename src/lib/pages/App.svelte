@@ -28,7 +28,6 @@
         if (!anotherTab) {
             localStorage.removeItem('tabHash');
         }
-        console.log(storedTabHash, 'xfxcvgxcbcxb');
     }
 
     function handleTabDuplicate() {
@@ -40,7 +39,6 @@
 
     function handleActivity() {
         anotherTab = tabHash === localStorage.getItem('tabHash');
-        console.log(tabHash, storedTabHash);
     }
 
     onMount(() => {
