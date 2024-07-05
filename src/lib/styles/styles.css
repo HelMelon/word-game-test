@@ -1,0 +1,41 @@
+@font-face {
+    font-family: "VAG World";
+    src: local("VAG World"), url("./src/lib/assets/fonts/VAGWorld.ttf");
+}
+
+html {
+    background-color: #262B38;
+}
+
+body {
+    height: auto;
+}
+
+h1 {
+    font-family: "VAG World", serif;
+    color: #fff;
+    font-weight: 700;
+    text-align: center;
+}
+
+.cell {
+    background-color: #fff;
+    border-radius: 20%;
+}
+
+.win-screen {
+    background-color: #262B38;
+}
+
+h1, h2, p, button {
+    font-size: clamp(0.5rem, 10vw, 1rem);
+}
+
+.guesed .cell {
+    background-color: #65BD65;
+}
+
+.wrong .cell {
+    color: #fff;
+    background-color: darkred;
+}
