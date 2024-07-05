@@ -6,13 +6,16 @@
     import {levelsList} from "../../utils/levelsCounter.js";
 
 
-    let levelCount = 1;
     let tabHash = Math.random().toString(16).slice(2);
-    let storedTabHash = localStorage.getItem('tabHash') || tabHash;
-    let level = levelsList.next().value.map(i => i);
-    let wordsList = JSON.parse(JSON.stringify(level));
-    let isWinStep = false;
+    localStorage.setItem('tabHash', tabHash);
+    let storedTabHash = localStorage.getItem('tabHash');
     let anotherTab = tabHash === storedTabHash;
+
+    let levelCount = 1;
+    let level = levelsList.next().value;
+    let wordsList = JSON.parse(JSON.stringify(level));
+
+    let isWinStep = false;
 
     function handleGetLevel() {
         level = JSON.parse(localStorage.getItem('levelStg'));
@@ -24,16 +27,14 @@
     }
 
     function onUnloadHandler () {
-        if (!anotherTab) {
-            localStorage.removeItem('tabHash');
-        }
+        localStorage.removeItem('tabHash');
+        return false;
     }
 
     function handleTabDuplicate() {
         localStorage.setItem('tabHash', tabHash);
-        storedTabHash = tabHash;
-        anotherTab = false;
-        localStorage.setItem('levelStg', JSON.stringify(level));
+        anotherTab = true;
+        level = JSON.parse(localStorage.getItem('levelStg'));
     }
 
     function handleActivity() {
@@ -41,13 +42,13 @@
     }
 
     onMount(() => {
-        localStorage.setItem('tabHash', anotherTab ? tabHash : storedTabHash);
+        level = JSON.parse(localStorage.getItem('levelStg')) || level;
         return onUnloadHandler
     });
 
 </script>
 
-<svelte:window on:beforeunload={onUnloadHandler} on:click={handleActivity} />
+<svelte:window on:beforeunload|preventDefault={onUnloadHandler} on:focus|preventDefault={handleActivity} />
 
 {#if (!isWinStep) }
     <GamePage {level} {wordsList} {levelCount} on:winStateChange={handleWinState}/>

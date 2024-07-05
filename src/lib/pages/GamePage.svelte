@@ -5,13 +5,14 @@
     export let wordsList;
     export let levelCount;
     $: connected = '';
+    const mappedWordList = wordsList.map(word => word || '');
 
 </script>
 
 <div class="screen">
     <h1>Уровень {levelCount}</h1>
     <div class="board">
-        {#each wordsList.sort((a, b) => a.length - b.length) as word, i}
+        {#each mappedWordList.sort((a, b) => a.length - b.length) as word, i}
                 <div id={i} class="line">
                     {#each word as letter}
                         <div class="cell big">
