@@ -1,3 +1,5 @@
+Project deployed on <a href="http://helicoder.monster/">Digital Ocean</a> and on <a href="https://helmelon.github.io/word-game-test/">GipHub pages</a>. 
+
 # create-svelte
 
 Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/main/packages/create-svelte).
